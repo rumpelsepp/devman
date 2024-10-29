@@ -121,11 +121,15 @@ cmd_run() {
 
     shift $((OPTIND - 1))
 
+    local cmd
     if [[ "$#" == 0 ]]; then
-        show_help
-        exit 1
+        if [[ -v SHELL ]]; then
+            cmd+=("$SHELL")
+        else
+            show_help
+            exit 1
+        fi
     else
-        local cmd
         cmd=("/bin/sh" "-c" "$*")
     fi
 
@@ -137,10 +141,22 @@ cmd_run() {
         --volume "$PWD:$CONTAINER_HOME/PWD/$(basename "$PWD")"
         --volume "$XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR"
         --log-driver none
-        --hostname "$container"
+        --hostname "devpod"
         --group-add keep-groups
         --userns keep-id
     )
+
+    if [[ -v COLORTERM ]]; then
+        args+=(--env "COLORTERM=$COLORTERM")
+    fi
+
+    if [[ -v TERM_PROGRAM ]]; then
+        args+=(--env "TERM_PROGRAM=$TERM_PROGRAM")
+    fi
+
+    if [[ -v SHELL ]]; then
+        args+=(--env "SHELL=$SHELL")
+    fi
 
     if ((allow_ssh)); then
         args+=(
