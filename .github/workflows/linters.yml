@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: Stefan Tatschner
+#
+# SPDX-License-Identifier: CC0-1.0
+
+name: linters
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    paths:
+    - '.github/**'
+    - 'devpod.sh'
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Dependencies
+      run: |
+        apt-get update -y
+        apt-get install -y shellcheck shfmt just
+
+    - name: Run shellcheck
+      run: |
+        just shellcheck

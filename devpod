@@ -53,27 +53,54 @@ search_and_source_config() {
 }
 
 show_help() {
-    echo "usage: $(basename "$BASH_ARGV0") [-c CONTAINER] CMD"
-    echo ""
-    echo "  -g              mount stuff to allow wayland GUI applications"
-    echo "  -s              mount stuff to allow ssh config and agent from host"
-    echo "  -c CONTAINER    container to use, default is debian"
+    echo "usage: $(basename "$BASH_ARGV0")"
 }
 
-main() {
+cmd_pull() {
+    local distro="debian"
+
+    while getopts "hd:" opt; do
+        case "$opt" in
+        h)
+            show_help
+            exit 1
+            ;;
+        d)
+            distro="$OPTARG"
+            ;;
+        *)
+            show_help
+            exit 1
+            ;;
+        esac
+    done
+
+    # TODO: Add more containers upstream.
+    case "$distro" in
+    debian)
+        podman pull "ghcr.io/rumpelsepp/devpod:master"
+        ;;
+    *)
+        show_help
+        exit 1
+        ;;
+    esac
+}
+
+cmd_run() {
     configured_args=()
     CONTAINER_HOME="/home/dev"
 
     search_and_source_config
 
-    local container="devpod-debian"
+    local container="ghcr.io/rumpelsepp/devpod:master"
     local allow_gui="0"
     local allow_ssh="0"
 
     while getopts "h?gsc:" opt; do
         case "$opt" in
         c)
-            container="devpod-$1"
+            container="$OPTARG"
             ;;
         g)
             allow_gui="1"
@@ -139,6 +166,28 @@ main() {
     fi
 
     podman run "${args[@]}" "${configured_args[@]}" "$container" "${cmd[@]}"
+}
+
+main() {
+    if [[ "$#" == 0 ]]; then
+        show_help
+        exit 1
+    fi
+
+    case "$1" in
+    pull)
+        shift
+        cmd_pull "$@"
+        ;;
+    run)
+        shift
+        cmd_run "$@"
+        ;;
+    *)
+        show_help
+        exit 1
+        ;;
+    esac
 }
 
 main "$@"

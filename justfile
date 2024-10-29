@@ -3,3 +3,8 @@ build-arch:
 
 build-debian:
     cd debian && just build
+
+lint: shellcheck
+
+shellcheck:
+    shellcheck devpod
