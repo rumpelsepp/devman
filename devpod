@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+
+set -eu
+
+search_configs() {
+    local global_conf="/etc/devpod/config.sh"
+    if [[ -f "$global_conf" ]]; then
+        export DEVPOD_GLOBAL_CONF="$global_conf"
+    fi
+
+    local user_conf="$HOME/.config/devpod/config.sh"
+    if [[ -f "$user_conf" ]]; then
+        export DEVPOD_USER_CONF="$user_conf"
+    fi
+
+    local git_root
+    if git_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+        local git_root_conf="$git_root/.devpod.sh"
+        if [[ -f "$git_root_conf" ]]; then
+            export DEVPOD_GIT_ROOT_CONF="$git_root_conf"
+        fi
+    fi
+
+    local pwd_conf="$PWD/.devpod.sh"
+    if [[ -f "$pwd_conf" ]]; then
+        export DEVPOD_PWD_CONF="$pwd_conf"
+    fi
+}
+
+search_and_source_config() {
+    search_configs
+
+    if [[ -n "${DEVPOD_PWD_CONF-}" ]]; then
+        # shellcheck source=/dev/null
+        source "$DEVPOD_PWD_CONF"
+        return 0
+    fi
+    if [[ -n "${DEVPOD_GIT_ROOT_CONF-}" ]]; then
+        # shellcheck source=/dev/null
+        source "$DEVPOD_GIT_ROOT_CONF"
+        return 0
+    fi
+    if [[ -n "${DEVPOD_USER_CONF-}" ]]; then
+        # shellcheck source=/dev/null
+        source "$DEVPOD_USER_CONF"
+        return 0
+    fi
+    if [[ -n "${DEVPOD_GLOBAL_CONF-}" ]]; then
+        # shellcheck source=/dev/null
+        source "$DEVPOD_GLOBAL_CONF"
+        return 0
+    fi
+}
+
+show_help() {
+    echo "usage: $(basename "$BASH_ARGV0") [-c CONTAINER] CMD"
+    echo ""
+    echo "  -g              mount stuff to allow wayland GUI applications"
+    echo "  -s              mount stuff to allow ssh config and agent from host"
+    echo "  -c CONTAINER    container to use, default is debian"
+}
+
+main() {
+    configured_args=()
+    CONTAINER_HOME="/home/dev"
+
+    search_and_source_config
+
+    local container="devpod-debian"
+    local allow_gui="0"
+    local allow_ssh="0"
+
+    while getopts "h?gsc:" opt; do
+        case "$opt" in
+        c)
+            container="devpod-$1"
+            ;;
+        g)
+            allow_gui="1"
+            ;;
+        s)
+            allow_ssh="1"
+            ;;
+        h | \?)
+            show_help
+            exit 0
+            ;;
+        *)
+            show_help
+            exit 1
+            ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ "$#" == 0 ]]; then
+        show_help
+        exit 1
+    else
+        local cmd
+        cmd=("/bin/sh" "-c" "$*")
+    fi
+
+    local args
+    args=(
+        --rm
+        -it
+        --workdir "$CONTAINER_HOME/PWD/$(basename "$PWD")"
+        --volume "$PWD:$CONTAINER_HOME/PWD/$(basename "$PWD")"
+        --volume "$XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR"
+        --log-driver none
+        --hostname "$container"
+        --group-add keep-groups
+        --userns keep-id
+    )
+
+    if ((allow_ssh)); then
+        args+=(
+            --env "SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+            --volume "$SSH_AUTH_SOCK:$SSH_AUTH_SOCK"
+            --volume "$HOME/.ssh:$CONTAINER_HOME/.ssh:O"
+        )
+    fi
+
+    if ((allow_gui)); then
+        args+=(
+            # --env "XDG_DATA_DIRS=$XDG_DATA_DIRS"  # TODO: not mounted
+            --env "XDG_SESSION_CLASS=$XDG_SESSION_CLASS"
+            --env "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR"
+            --env "XDG_SESSION_DESKTOP=$XDG_SESSION_DESKTOP"
+            --env "XDG_CURRENT_DESKTOP=$XDG_CURRENT_DESKTOP"
+            --env "XDG_MENU_PREFIX=$XDG_MENU_PREFIX"
+            --env "XDG_SESSION_TYPE=$XDG_SESSION_TYPE"
+            --env "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+            --env "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS"
+            --device "/dev/dri"
+        )
+    fi
+
+    podman run "${args[@]}" "${configured_args[@]}" "$container" "${cmd[@]}"
+}
+
+main "$@"

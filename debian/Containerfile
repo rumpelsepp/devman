@@ -1,0 +1,75 @@
+FROM docker.io/debian:trixie
+
+COPY debian-de.sources /etc/apt/sources.list.de/
+
+RUN apt-get update
+
+# Installing latex takes so long, cache it.
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-full latexmk xindy
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    atuin \
+    apt-utils \
+    bat \
+    build-essential \
+    clang \
+    cmake \
+    curl \
+    desktop-file-utils \
+    dialog \
+    evince \
+    fd-find \
+    fish \
+    gh \
+    git \
+    git-delta \
+    golang-go \
+    htop \
+    just \
+    kitty \
+    locales \
+    locales-all \
+    meson \
+    neovim \
+    netcat-openbsd \
+    npm \
+    pipx \
+    python3-poetry \
+    ripgrep \
+    rustup \
+    shellcheck \
+    shfmt \
+    socat \
+    strace \
+    sudo \ 
+    tmux \
+    valgrind \
+    gettext \
+    wireshark
+
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+RUN ln -s -f /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+RUN groupadd wheel
+RUN useradd -m -G wheel dev
+RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+
+RUN git clone https://github.com/neovim/neovim
+RUN git -C neovim checkout stable
+RUN cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
+RUN cd neovim && sudo make install
+RUN rm -rf neovim
+
+USER dev
+
+ENV TERM=xterm-256color
+ENV PATH=/home/dev/.local/bin:/home/dev/.local/npm-packages/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN pipx install ruff uv
+RUN npm install --prefix /home/dev/.local/npm-packages -g bash-language-server
+RUN rustup toolchain install stable
+
+WORKDIR $HOME

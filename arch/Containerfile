@@ -1,0 +1,28 @@
+FROM docker.io/archlinux
+
+RUN pacman -Syu --noconfirm
+RUN pacman -S --noconfirm \
+    git \
+    neovim \
+    htop \
+    fish \
+    tmux \
+    sudo \ 
+    base-devel \
+    cargo \
+    ripgrep \
+    devtools \
+    fd \
+    bat \
+    go \
+    clang \
+    aurpublish \
+    git-delta
+
+ENV TERM=xterm-256color
+RUN useradd -m -G wheel dev
+RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER dev
+RUN cd /tmp && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm
+
