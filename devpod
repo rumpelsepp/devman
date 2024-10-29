@@ -97,7 +97,7 @@ cmd_run() {
     local allow_gui="0"
     local allow_ssh="0"
 
-    while getopts "h?gsc:" opt; do
+    while getopts "hgsc:" opt; do
         case "$opt" in
         c)
             container="$OPTARG"
@@ -108,7 +108,7 @@ cmd_run() {
         s)
             allow_ssh="1"
             ;;
-        h | \?)
+        h)
             show_help
             exit 0
             ;;
