@@ -136,10 +136,12 @@ cmd_run() {
     local args
     args=(
         --rm
-        -it
+        --interactive
+        --tty
         --workdir "$CONTAINER_HOME/PWD/$(basename "$PWD")"
         --volume "$PWD:$CONTAINER_HOME/PWD/$(basename "$PWD")"
         --volume "$XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR"
+        --tmpfs "/tmp:rw,size=787448k,mode=1777"  # TODO: calculate size somehow?
         --log-driver none
         --hostname "devpod"
         --group-add keep-groups
