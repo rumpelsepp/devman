@@ -73,10 +73,10 @@ RUN rm -rf neovim
 USER dev
 
 ENV TERM=xterm-256color
-ENV PATH=/home/dev/.local/bin:/home/dev/.local/npm-packages/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/home/dev/.local/bin:/home/dev/.local/npm-packages/bin:/home/dev/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN pipx install ruff uv
 RUN npm install --prefix /home/dev/.local/npm-packages -g bash-language-server
 RUN rustup toolchain install stable
 
-WORKDIR $HOME
+RUN cargo install texlab
