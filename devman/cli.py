@@ -22,7 +22,7 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
         "-c",
         "--container",
         default=conf.get_value(
-            "devman.default_container", "ghcr.io/rumpelsepp/devman:master",
+            "devman.default_container", "ghcr.io/rumpelsepp/devman:latest",
         ),
         help="specify container image for all commands",
     )
