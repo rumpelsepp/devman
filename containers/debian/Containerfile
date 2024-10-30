@@ -8,8 +8,6 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.title="Debian Devman"
 LABEL org.opencontainers.image.base.name="docker.io/debian:trixie"
 
-COPY debian-de.sources /etc/apt/sources.list.de/
-
 RUN apt-get update
 
 # Installing latex takes so long, cache it.
@@ -20,6 +18,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bat \
     build-essential \
     clang \
+    clangd \
     cmake \
     curl \
     desktop-file-utils \
@@ -32,6 +31,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git \
     git-delta \
     golang-go \
+    gopls \
     htop \
     just \
     kitty \
@@ -45,6 +45,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3-poetry \
     ripgrep \
     rustup \
+    pre-commit \
+    pre-commit-hooks \
     screen \
     shellcheck \
     shfmt \
