@@ -10,8 +10,8 @@ from pprint import pprint
 
 import argcomplete
 
-from devpod import config
-from devpod import podman
+from devman import config
+from devman import podman
 
 
 def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.ArgumentParser]:
@@ -22,14 +22,14 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
         "-c",
         "--container",
         default=conf.get_value(
-            "devpod.default_container", "ghcr.io/rumpelsepp/devpod:master",
+            "devman.default_container", "ghcr.io/rumpelsepp/devman:master",
         ),
         help="specify container image for all commands",
     )
     parser.add_argument(
         "--mount",
         action="append",
-        default=conf.get_value("devpod.mounts"),
+        default=conf.get_value("devman.mounts"),
         help="mount directory in $HOME into the container"
     )
     parser.add_argument(
@@ -40,17 +40,17 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
     parser.add_argument(
         "--version",
         action="version",
-        version=f'%(prog)s {metadata.version("devpod")}',
+        version=f'%(prog)s {metadata.version("devman")}',
     )
 
     subparsers = parser.add_subparsers()
 
-    run_parser = subparsers.add_parser("run", help="run command in devpod container")
+    run_parser = subparsers.add_parser("run", help="run command in devman container")
     run_parser.add_argument(
         "CMD",
         nargs="?",
         default=conf.get_value(
-            "devpod.run.default_command",
+            "devman.run.default_command",
             podman.get_default_cmd(),
         ),
         help="command to run",
@@ -58,18 +58,18 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
     run_parser.add_argument(
         "--ssh",
         action=argparse.BooleanOptionalAction,
-        default=conf.get_value("devpod.run.ssh", False),
-        help="enable/disable ssh agent and credentials within the devpod",
+        default=conf.get_value("devman.run.ssh", False),
+        help="enable/disable ssh agent and credentials within the devman",
     )
     run_parser.add_argument(
         "--gui",
-        default=conf.get_value("devpod.run.gui", False),
+        default=conf.get_value("devman.run.gui", False),
         action=argparse.BooleanOptionalAction,
-        help="enable/disable support for wayland applications within the devpod",
+        help="enable/disable support for wayland applications within the devman",
     )
     run_parser.add_argument(
         "--term",
-        default=conf.get_value("devpod.run.share_term", True),
+        default=conf.get_value("devman.run.share_term", True),
         action=argparse.BooleanOptionalAction,
         help="enable/disable sharing TERM variable with container",
     )
@@ -110,7 +110,7 @@ def cmd_pull(args: argparse.Namespace) -> int:
 
 
 def run() -> None:
-    conf, config_path = config.load_config_file("devpod.toml")
+    conf, config_path = config.load_config_file("devman.toml")
     args, parser = parse_args(conf)
     exitcode = 0
 

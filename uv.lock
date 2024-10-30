@@ -50,7 +50,7 @@ wheels = [
 ]
 
 [[package]]
-name = "devpod"
+name = "devman"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

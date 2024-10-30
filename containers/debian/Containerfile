@@ -2,7 +2,7 @@ FROM docker.io/debian:trixie
 
 LABEL org.opencontainers.image.authors="stefan@rumpelsepp.org"
 LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.title="Debian Devpod"
+LABEL org.opencontainers.image.title="Debian Devman"
 LABEL org.opencontainers.image.base.name="docker.io/debian:trixie"
 
 COPY debian-de.sources /etc/apt/sources.list.de/

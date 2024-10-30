@@ -8,7 +8,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "devpod"
+name = "devman"
 version = "0.1.0"
 description = "Manager for Development Containers with podman"
 readme = "README.md"
@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.scripts]
-"devpod" = "devpod.__main__:main"
+"devman" = "devman.__main__:main"
 
 [tool.uv]
 dev-dependencies = [

@@ -9,7 +9,7 @@ import sys
 from importlib import metadata
 from pathlib import Path
 
-from devpod import cli
+from devman import cli
 
 
 try:

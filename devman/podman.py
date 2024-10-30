@@ -89,7 +89,7 @@ def create_args(
         "/tmp:rw,size=787448k,mode=1777",
     ]  # TODO: calculate size somehow?
     args += ["--log-driver", "none"]
-    args += ["--hostname", "devpod"]
+    args += ["--hostname", "devman"]
     args += ["--group-add", "keep-groups"]
     args += ["--userns", "keep-id"]
 

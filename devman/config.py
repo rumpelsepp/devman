@@ -42,7 +42,7 @@ def get_git_root() -> Path | None:
 
 
 def get_config_dirs() -> list[Path]:
-    user_conf = user_config_path("devpod")
+    user_conf = user_config_path("devman")
     git_root = get_git_root()
     cwd = Path.cwd()
     if git_root is not None:
@@ -54,8 +54,8 @@ def search_config(
     filename: Path | None = None,
     extra_paths: list[Path] | None = None,
 ) -> Path | None:
-    name = filename if filename is not None else Path("devpod.toml")
-    if (s := os.getenv("DEVPOD_CONFIG")) is not None:
+    name = filename if filename is not None else Path("devman.toml")
+    if (s := os.getenv("devman_CONFIG")) is not None:
         if (path := Path(s)).exists():
             return path
         raise FileNotFoundError(s)
