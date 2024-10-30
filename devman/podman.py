@@ -126,5 +126,3 @@ def create_args(
             args += create_mount_arg(mount)
 
     return args + [container]
-
-

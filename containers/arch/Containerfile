@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Stefan Tatschner
+# SPDX-License-Identifier: MIT
+
 FROM docker.io/archlinux
 
 RUN pacman -Syu --noconfirm

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Stefan Tatschner
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # devman
 
 A tool for **dev**elopment using pod**man**.

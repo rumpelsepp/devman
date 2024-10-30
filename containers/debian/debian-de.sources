@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Stefan Tatschner
+# SPDX-License-Identifier: MIT
+
 Types: deb
 URIs: http://ftp.de.debian.org/debian
 Suites: trixie trixie-updates

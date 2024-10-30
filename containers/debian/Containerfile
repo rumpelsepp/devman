@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Stefan Tatschner
+# SPDX-License-Identifier: MIT
+
 FROM docker.io/debian:trixie
 
 LABEL org.opencontainers.image.authors="stefan@rumpelsepp.org"

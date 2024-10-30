@@ -10,11 +10,12 @@ from pprint import pprint
 
 import argcomplete
 
-from devman import config
-from devman import podman
+from devman import config, podman
 
 
-def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.ArgumentParser]:
+def parse_args(
+    conf: config.Config,
+) -> tuple[argparse.Namespace, argparse.ArgumentParser]:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
@@ -22,7 +23,8 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
         "-c",
         "--container",
         default=conf.get_value(
-            "devman.default_container", "ghcr.io/rumpelsepp/devman:latest",
+            "devman.default_container",
+            "ghcr.io/rumpelsepp/devman:latest",
         ),
         help="specify container image for all commands",
     )
@@ -30,7 +32,7 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
         "--mount",
         action="append",
         default=conf.get_value("devman.mounts"),
-        help="mount directory in $HOME into the container"
+        help="mount directory in $HOME into the container",
     )
     parser.add_argument(
         "--show-config",
@@ -89,7 +91,9 @@ def parse_args(conf: config.Config) -> tuple[argparse.Namespace, argparse.Argume
 
 
 def cmd_run(args: argparse.Namespace) -> int:
-    podman_args = podman.create_args(args.container, ssh=args.ssh, gui=args.gui, term=args.term, mounts=args.mount)
+    podman_args = podman.create_args(
+        args.container, ssh=args.ssh, gui=args.gui, term=args.term, mounts=args.mount
+    )
     invocation = ["podman", "run"] + podman_args + [args.CMD]
 
     if args.debug:
