@@ -90,8 +90,9 @@ def create_args(
     ]  # TODO: calculate size somehow?
     args += ["--log-driver", "none"]
     args += ["--hostname", "devman"]
+
     args += ["--group-add", "keep-groups"]
-    args += ["--userns", "keep-id"]
+    args += ["--userns", "keep-id:uid=1000,gid=1000"]
 
     args += env_flag("COLORTERM")
     args += env_flag("EDITOR")
