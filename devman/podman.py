@@ -68,7 +68,7 @@ def create_mount_arg(raw: str) -> list[str]:
 def create_args(
     container: str,
     mounts: list[str] | None,
-    expose: list[str] | None,
+    publish: list[str] | None,
     ssh: bool,
     gui: bool,
     term: bool,
@@ -126,8 +126,8 @@ def create_args(
     if mounts is not None:
         for mount in mounts:
             args += create_mount_arg(mount)
-    if expose is not None:
-        for port in expose:
-            args += ["--expose", port]
+    if publish is not None:
+        for port in publish:
+            args += ["--publish", port]
 
     return args + [container]

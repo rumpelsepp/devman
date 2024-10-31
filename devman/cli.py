@@ -10,9 +10,7 @@ from importlib import metadata
 
 import argcomplete
 
-from devman import config
-from devman import exitcodes
-from devman import podman
+from devman import config, exitcodes, podman
 
 
 def parse_args(
@@ -90,11 +88,12 @@ def parse_args(
         help="mount directory in $HOME into the container",
     )
     run_parser.add_argument(
-        "-e",
-        "--expose",
-        action="append",
-        default=conf.get_value("devman.run.expose"),
-        help="expose a port, or a range of ports (e.g. --expose 3300-3310) to the host",
+        "-p",
+        "--publish",
+        nargs="*",
+        metavar="SPEC",
+        default=conf.get_value("devman.run.publish"),
+        help="publish a container's port, or range of ports, to the host",
     )
     run_parser.set_defaults(command="run")
 
@@ -117,7 +116,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         gui=args.gui,
         term=args.term,
         mounts=args.mount,
-        expose=args.expose,
+        publish=args.publish,
     )
 
     cmd = args.CMD if isinstance(args.CMD, list) else [args.CMD]

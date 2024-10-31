@@ -81,4 +81,3 @@ NOPERM = 77
 
 # Something was found in an unconfigured or misconfigured state.
 CONFIG = 78
-
