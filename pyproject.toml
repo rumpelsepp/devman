@@ -9,7 +9,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "devman"
-version = "0.1.2"
+version = "0.1.3"
 description = "Manager for Development Containers with podman"
 readme = "README.md"
 maintainers = [
