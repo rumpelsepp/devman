@@ -3,14 +3,16 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import json
 import subprocess
 import sys
 from importlib import metadata
-from pprint import pprint
 
 import argcomplete
 
-from devman import config, podman
+from devman import config
+from devman import exitcodes
+from devman import podman
 
 
 def parse_args(
@@ -41,7 +43,11 @@ def parse_args(
 
     subparsers = parser.add_subparsers()
 
-    run_parser = subparsers.add_parser("run", help="run command in devman container")
+    run_parser = subparsers.add_parser(
+        "run",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        help="run command in devman container",
+    )
     run_parser.add_argument(
         "CMD",
         nargs="*",
@@ -92,7 +98,11 @@ def parse_args(
     )
     run_parser.set_defaults(command="run")
 
-    pull_parser = subparsers.add_parser("pull", help="pull configured container")
+    pull_parser = subparsers.add_parser(
+        "pull",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        help="pull configured container",
+    )
     pull_parser.set_defaults(command="pull")
 
     argcomplete.autocomplete(parser)
@@ -114,8 +124,8 @@ def cmd_run(args: argparse.Namespace) -> int:
     invocation = ["podman", "run"] + podman_args + cmd
 
     if args.debug:
-        pprint(invocation)
-        return 0
+        print(json.dumps(invocation, indent=4))
+        return exitcodes.OK
 
     p = subprocess.run(invocation, check=False)
     return p.returncode
@@ -138,11 +148,11 @@ def run() -> None:
     if args.show_config:
         if config_path is not None:
             print(f"config loaded from: {config_path}", file=sys.stderr)
-            pprint(conf)
-            sys.exit(0)
+            print(json.dumps(conf, indent=4))
+            sys.exit(exitcodes.OK)
         else:
             print("no config available", file=sys.stderr)
-            sys.exit(1)
+            sys.exit(exitcodes.CONFIG)
 
     if "command" not in args:
         parser.error("no command specified")
