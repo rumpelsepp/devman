@@ -67,10 +67,11 @@ def create_mount_arg(raw: str) -> list[str]:
 
 def create_args(
     container: str,
-    mounts: list[str] | None = None,
-    ssh: bool = False,
-    gui: bool = False,
-    term: bool = True,
+    mounts: list[str] | None,
+    expose: list[str] | None,
+    ssh: bool,
+    gui: bool,
+    term: bool,
 ) -> list[str]:
     cwd = Path.cwd()
     home = Path.home()
@@ -125,5 +126,8 @@ def create_args(
     if mounts is not None:
         for mount in mounts:
             args += create_mount_arg(mount)
+    if expose is not None:
+        for port in expose:
+            args += ["--expose", port]
 
     return args + [container]

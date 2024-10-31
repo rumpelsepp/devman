@@ -29,12 +29,6 @@ def parse_args(
         help="specify container image for all commands",
     )
     parser.add_argument(
-        "--mount",
-        action="append",
-        default=conf.get_value("devman.mounts"),
-        help="mount directory in $HOME into the container",
-    )
-    parser.add_argument(
         "--show-config",
         action="store_true",
         help="show parsed config file and exit",
@@ -50,7 +44,7 @@ def parse_args(
     run_parser = subparsers.add_parser("run", help="run command in devman container")
     run_parser.add_argument(
         "CMD",
-        nargs="?",
+        nargs="*",
         default=conf.get_value(
             "devman.run.default_command",
             podman.get_default_cmd(),
@@ -58,12 +52,14 @@ def parse_args(
         help="command to run",
     )
     run_parser.add_argument(
+        "-s",
         "--ssh",
         action=argparse.BooleanOptionalAction,
         default=conf.get_value("devman.run.ssh", False),
         help="enable/disable ssh agent and credentials within the devman",
     )
     run_parser.add_argument(
+        "-g",
         "--gui",
         default=conf.get_value("devman.run.gui", False),
         action=argparse.BooleanOptionalAction,
@@ -80,6 +76,20 @@ def parse_args(
         action="store_true",
         help="show podman arguments and exit",
     )
+    run_parser.add_argument(
+        "-m",
+        "--mount",
+        action="append",
+        default=conf.get_value("devman.run.mounts"),
+        help="mount directory in $HOME into the container",
+    )
+    run_parser.add_argument(
+        "-e",
+        "--expose",
+        action="append",
+        default=conf.get_value("devman.run.expose"),
+        help="expose a port, or a range of ports (e.g. --expose 3300-3310) to the host",
+    )
     run_parser.set_defaults(command="run")
 
     pull_parser = subparsers.add_parser("pull", help="pull configured container")
@@ -92,9 +102,16 @@ def parse_args(
 
 def cmd_run(args: argparse.Namespace) -> int:
     podman_args = podman.create_args(
-        args.container, ssh=args.ssh, gui=args.gui, term=args.term, mounts=args.mount
+        args.container,
+        ssh=args.ssh,
+        gui=args.gui,
+        term=args.term,
+        mounts=args.mount,
+        expose=args.expose,
     )
-    invocation = ["podman", "run"] + podman_args + [args.CMD]
+
+    cmd = args.CMD if isinstance(args.CMD, list) else [args.CMD]
+    invocation = ["podman", "run"] + podman_args + cmd
 
     if args.debug:
         pprint(invocation)
