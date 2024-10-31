@@ -33,7 +33,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     golang-go \
     gopls \
     htop \
+    iproute2 \
     just \
+    libbpf-tools \
     kitty \
     locales \
     locales-all \
