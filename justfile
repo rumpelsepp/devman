@@ -22,3 +22,8 @@ lint-reuse:
 fmt:
     ruff format devman
     ruff check --fix devman
+
+release increment:
+    cz bump --increment {{increment}}
+    git push --follow-tags
+    gh release create "v$(cz version -p)"
