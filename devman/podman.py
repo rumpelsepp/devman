@@ -94,6 +94,7 @@ def create_args(
 
     args += ["--group-add", "keep-groups"]
     args += ["--userns", "keep-id:uid=1000,gid=1000"]
+    args += ["--init"]
 
     args += env_flag("COLORTERM")
     args += env_flag("EDITOR")

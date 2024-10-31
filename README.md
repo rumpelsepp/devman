@@ -11,17 +11,14 @@ Features such as sharing SSH config (e.g. SSH agent) or starting GUI application
 
 ## Install
 
-On the system level, the [`podman`](https://podman.io/) tool is required.
-It is available and packaged for a large number of systems.
+On the system level, the [`podman`](https://podman.io/) and the [catatonit](https://github.com/openSUSE/catatonit) tools are required.
+They are available and packaged for a large number of systems.
 Please refer to the official manual containing [install instructions](https://podman.io/docs/installation).
 
-For performance reason you could consider using native overlay mounts.
-Make sure that the following is included in your storage configuration.
+On Debian, this bails down to:
 
 ```
-$ cat ~/.config/containers/storage.conf 
-[storage]
-driver = "overlay"
+$ sudo apt install podman catatonit
 ```
 
 ### pipx
@@ -59,3 +56,15 @@ The user `dev` corresponds to the user that invoked `devman`.
 
 If you would like to share your SSH config with the container, add `--ssh`.
 If you want to be able to start GUI applications from the container, add `--gui`.
+
+## `podman` Performance
+
+For performance reason you could consider using native overlay mounts.
+Make sure that the following is included in your storage configuration.
+
+```
+$ cat ~/.config/containers/storage.conf
+[storage]
+driver = "overlay"
+```
+
