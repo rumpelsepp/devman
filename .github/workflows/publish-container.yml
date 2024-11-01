@@ -48,8 +48,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        id: push
+      - name: Build and push Debian container image
+        id: push_debian
         uses: docker/build-push-action@v6
         with:
           context: containers/debian
@@ -61,6 +61,23 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/devman:debian
+          subject-digest: ${{ steps.push_debian.outputs.digest }}
+          push-to-registry: true
+
+      - name: Build and push Arch container image
+        id: push_arch
+        uses: docker/build-push-action@v6
+        with:
+          context: containers/arch
+          file: containers/arch/Containerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/devman:arch
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/devman:arch
+          subject-digest: ${{ steps.push_rach.outputs.digest }}
           push-to-registry: true
