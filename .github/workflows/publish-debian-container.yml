@@ -55,12 +55,12 @@ jobs:
           context: containers/debian
           file: containers/debian/Containerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/devman:debian
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian
           labels: ${{ steps.meta.outputs.labels }}
       
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/devman:debian
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
