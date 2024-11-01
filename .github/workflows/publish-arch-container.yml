@@ -52,9 +52,9 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: containers/arch
           file: containers/arch/Containerfile
-          push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:archlinux
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
