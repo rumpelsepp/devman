@@ -10,56 +10,57 @@ LABEL org.opencontainers.image.base.name="docker.io/debian:trixie"
 
 RUN apt-get update
 
-# Installing latex takes so long, cache it.
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-full latexmk xindy
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    atuin \
-    apt-utils \
-    bat \
-    build-essential \
-    clang \
-    clangd \
-    catatonit \
-    cmake \
-    curl \
-    desktop-file-utils \
-    dialog \
-    evince \
-    fd-find \
-    fish \
-    fzf \
-    gh \
-    git \
-    git-delta \
-    golang-go \
-    gopls \
-    htop \
-    iproute2 \
-    just \
-    libbpf-tools \
-    kitty \
-    locales \
-    locales-all \
-    meson \
-    neovim \
-    netcat-openbsd \
-    npm \
-    pipx \
-    python3-poetry \
-    ripgrep \
-    rustup \
-    pre-commit \
-    pre-commit-hooks \
-    screen \
-    shellcheck \
-    shfmt \
-    socat \
-    strace \
-    sudo \ 
-    tmux \
-    valgrind \
-    gettext \
-    wireshark
+# Cache as much as possible here.
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-full
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y latexmk
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y xindy
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y atuin
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y bat
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y clang
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y clangd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y catatonit
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y cmake
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y desktop-file-utils
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y dialog
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y evince
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y fd-find
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y fish
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y fzf
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y gh
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git-delta
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y golang-go
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y gopls
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y htop
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y just
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libbpf-tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y kitty
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales-all
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y meson
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y neovim
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y netcat-openbsd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y npm
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y pipx
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-poetry
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ripgrep
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y rustup
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y pre-commit
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y pre-commit-hooks
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y screen
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y shellcheck
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y shfmt
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y socat
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y strace
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y sudo 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tmux
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y valgrind
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y gettext
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wireshark
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8

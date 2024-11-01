@@ -4,23 +4,24 @@
 FROM docker.io/archlinux
 
 RUN pacman -Syu --noconfirm
-RUN pacman -S --noconfirm \
-    git \
-    neovim \
-    htop \
-    fish \
-    tmux \
-    sudo \ 
-    base-devel \
-    cargo \
-    ripgrep \
-    devtools \
-    fd \
-    bat \
-    go \
-    clang \
-    aurpublish \
-    git-delta
+
+# Cache as much as possible
+RUN pacman -S --noconfirm aurpublish
+RUN pacman -S --noconfirm base-devel
+RUN pacman -S --noconfirm bat
+RUN pacman -S --noconfirm cargo
+RUN pacman -S --noconfirm clang
+RUN pacman -S --noconfirm devtools
+RUN pacman -S --noconfirm fd
+RUN pacman -S --noconfirm fish
+RUN pacman -S --noconfirm git
+RUN pacman -S --noconfirm git-delta
+RUN pacman -S --noconfirm go
+RUN pacman -S --noconfirm htop
+RUN pacman -S --noconfirm neovim
+RUN pacman -S --noconfirm ripgrep
+RUN pacman -S --noconfirm sudo 
+RUN pacman -S --noconfirm tmux
 
 ENV TERM=xterm-256color
 RUN useradd -m -G wheel dev
