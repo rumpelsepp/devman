@@ -82,6 +82,7 @@ def create_args(
         "--rm",
         "--interactive",
         "--tty",
+        "--init",
     ]
     args += ["--workdir", str(container_cwd)]
     args += ["--volume", f"{cwd}:{container_cwd}"]
@@ -94,7 +95,6 @@ def create_args(
 
     args += ["--group-add", "keep-groups"]
     args += ["--userns", "keep-id:uid=1000,gid=1000"]
-    args += ["--init"]
 
     args += env_flag("COLORTERM")
     args += env_flag("EDITOR")
