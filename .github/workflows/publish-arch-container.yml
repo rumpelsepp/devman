@@ -5,7 +5,7 @@
 # https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
 
 
-name: Create and publish a Container image
+name: Publish arch container
 
 on:
   push:
