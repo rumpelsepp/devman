@@ -24,7 +24,7 @@ def parse_args(
         "--container",
         default=conf.get_value(
             "devman.default_container",
-            "ghcr.io/rumpelsepp/devman:latest",
+            "ghcr.io/rumpelsepp/devman:debian",
         ),
         help="specify container image for all commands",
     )
