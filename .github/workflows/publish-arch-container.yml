@@ -30,6 +30,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # https://github.com/actions/runner-images/issues/2840#issuecomment-1284059930
+      - name: Free disk space
+        uses: ./.github/actions/disk-cleanup
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
