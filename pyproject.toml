@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.scripts]
-"devman" = "devman.__main__:main"
+"devman" = "devman.cli:run"
 
 [tool.uv]
 dev-dependencies = [

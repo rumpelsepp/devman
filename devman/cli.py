@@ -4,6 +4,7 @@
 
 import argparse
 import json
+import signal
 import subprocess
 import sys
 from importlib import metadata
@@ -156,19 +157,15 @@ def run() -> None:
     if "command" not in args:
         parser.error("no command specified")
 
-    match args.command:
-        case "run":
-            exitcode = cmd_run(args)
-        case "pull":
-            exitcode = cmd_pull(args)
-        case _:
-            raise RuntimeError("BUG: unreachable code")
+    try:
+        match args.command:
+            case "run":
+                exitcode = cmd_run(args)
+            case "pull":
+                exitcode = cmd_pull(args)
+            case _:
+                raise RuntimeError("BUG: unreachable code")
+    except KeyboardInterrupt:
+        exitcode = 128 + signal.SIGINT
 
     sys.exit(exitcode)
-
-
-if __name__ == "__main__":
-    try:
-        run()
-    except KeyboardInterrupt:
-        pass
