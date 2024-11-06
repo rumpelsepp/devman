@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Stefan Tatschner
+# SPDX-License-Identifier: MIT
+
+FROM ghcr.io/rumpelsepp/devman:debian
+
+LABEL org.opencontainers.image.authors="stefan@rumpelsepp.org"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.title="Debian Large Devman"
+LABEL org.opencontainers.image.base.name="ghcr.io/rumpelsepp/devman:debian"
+
+RUN apt-get update
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-full
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y latexmk

@@ -11,8 +11,8 @@ LABEL org.opencontainers.image.base.name="docker.io/debian:trixie"
 RUN apt-get update
 
 # Cache as much as possible here.
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-full
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y latexmk
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y devscripts
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y dh-make
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y xindy
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y atuin
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils
