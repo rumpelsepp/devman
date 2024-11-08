@@ -15,7 +15,7 @@ On the system level, the [`podman`](https://podman.io/) and the [catatonit](http
 They are available and packaged for a large number of systems.
 Please refer to the official manual containing [install instructions](https://podman.io/docs/installation).
 
-On Debian, this bails down to:
+On Debian, this leads to:
 
 ```
 $ sudo apt install podman catatonit
