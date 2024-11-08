@@ -11,7 +11,7 @@ Features such as sharing SSH config (e.g. SSH agent) or starting GUI application
 
 ## Install
 
-On the system level, the [`podman`](https://podman.io/) and the [catatonit](https://github.com/openSUSE/catatonit) tools are required.
+On the system level, the [`podman`](https://podman.io/) and the [`catatonit`](https://github.com/openSUSE/catatonit) tools are required.
 They are available and packaged for a large number of systems.
 Please refer to the official manual containing [install instructions](https://podman.io/docs/installation).
 
