@@ -35,13 +35,13 @@ def get_default_cmd() -> str:
 
 
 def create_mount_arg(raw: str) -> list[str]:
-    home = Path.home()
+    cwd = Path.cwd()
     container_home = Path("/home/dev")
 
     parts = raw.split(":", maxsplit=2)
     hostdir = Path(parts[0])
     if not hostdir.is_absolute():
-        hostdir = home.joinpath(hostdir)
+        hostdir = cwd.joinpath(hostdir)
     flags = None
 
     match len(parts):
@@ -51,7 +51,7 @@ def create_mount_arg(raw: str) -> list[str]:
         case 2:
             containerdir = Path(parts[1])
         case 1:
-            containerdir = container_home.joinpath(hostdir.relative_to(home))
+            containerdir = container_home.joinpath(hostdir.relative_to(cwd))
         case _:
             raise RuntimeError("BUG: unreachable code")
 
