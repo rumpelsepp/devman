@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # https://github.com/actions/runner-images/issues/2840#issuecomment-1284059930
       - name: Free disk space
@@ -74,7 +74,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # https://github.com/actions/runner-images/issues/2840#issuecomment-1284059930
       - name: Free disk space
