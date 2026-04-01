@@ -52,7 +52,7 @@ jobs:
 
       - name: Build and push Debian container image
         id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           context: containers/debian
@@ -98,7 +98,7 @@ jobs:
 
       - name: Build and push Debian container image
         id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           context: containers/debian-large
